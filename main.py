@@ -1,18 +1,15 @@
 import pandas as pd
-import scipy.stats as st
 import multiprocessing as mp
 import datetime as dt
 import requests
-import requests
 import json
-import locale
 from tqdm import tqdm
-from BBRLight import BBR
-from DAWA import LejlighedData
+from DAWA import LejlighedData, BBR
 #Angiv placering for csvfilen den skal indlæse
 Csvpath="Solgteboliger.csv"
 #Angiv placering for csvfilen den skal gemme
 Savefilepath='SolgteboligerFeatures.csv'
+#Angiv chunksize for hver fil.
 CHUNKSIZE = 10
 
 if __name__ == '__main__':
@@ -32,9 +29,9 @@ if __name__ == '__main__':
         result.append(f.get()) 
 
     #Sammensætter datasættene
-    training = pd.concat(result)
+    dfcon = pd.concat(result)
 
     end_time = dt.datetime.now()
     elapsed_time = end_time - start_time
-    print ("Done. Det tog : ", elapsed_time)
-    training.to_csv(Savefilepath,encoding="utf-8-sig")
+    print ("Færdig.... Det tog : ", elapsed_time)
+    dfcon.to_csv(Savefilepath,encoding="utf-8-sig")

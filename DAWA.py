@@ -1,10 +1,11 @@
 import pandas as pd
 import requests
 import json
-import locale
 from tqdm import tqdm
-from BBRLight import BBR
 def BBR(adresseid):
+	""" For hver adresse ID fra DAWA indsamles oplysninger fra BBRlight
+	Args:
+		adresseid: Adresse ID fra DAWA"""
     tihi=[]
     r=requests.get('https://dawa.aws.dk/bbrlight/enheder?adresseid='+str(adresseid)).text
     j=json.loads(r)
@@ -33,6 +34,11 @@ def BBR(adresseid):
     'Bygning_KomEjerlavKode':j[0]['bygning']['KomEjerlavKode']}
     return data
 def LejlighedData(df):
+	""" bruges til at indsamle oplysninger både fra DAWA og BBRlight gennem en adresse
+	Args:
+		df: DataFrame hvor der er en kolonne der hedder adresse gerne så speficikt som muligt 
+			dsv med postnummer og By
+	 """
     url='https://dawa.aws.dk/adresser?q='
     for row in df.itertuples():
         try:
